@@ -1,0 +1,3 @@
+/Users/elior/CLionProjects/Algorithms-Project-1/cmake-build-debug/CMakeFiles/Algorithms_Project_1.dir
+/Users/elior/CLionProjects/Algorithms-Project-1/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/elior/CLionProjects/Algorithms-Project-1/cmake-build-debug/CMakeFiles/rebuild_cache.dir
