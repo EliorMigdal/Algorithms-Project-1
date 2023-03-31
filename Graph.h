@@ -25,6 +25,7 @@ public:
 
 	//Setters
 	bool setNumOfVertices(int n);
+    void setGraphDirection(char);
 
 	//Methods
 	bool addEdge(int from, int to);
@@ -34,5 +35,3 @@ public:
 	const list<int>& findEulerCircuit();
 	const list<int>& findCircuit();
 };
-
-

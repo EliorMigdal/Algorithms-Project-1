@@ -16,7 +16,6 @@ Graph::Graph(char directed)
 	}
 }
 
-
 /*----------------------Getters----------------------*/
 
 int Graph::getNumOfVertices() const
@@ -28,7 +27,6 @@ int Graph::getNumOfEdges() const
 {
 	return m;
 }
-
 
 /*----------------------Setters----------------------*/
 
@@ -46,6 +44,10 @@ bool Graph::setNumOfVertices(int n)
 	return true;
 }
 
+void Graph::setGraphDirection(char isDirected)
+{
+    this->directed = isDirected;
+}
 
 /*----------------------Methods----------------------*/
 

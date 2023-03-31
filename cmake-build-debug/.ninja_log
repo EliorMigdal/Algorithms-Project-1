@@ -1,0 +1,18 @@
+# ninja log v5
+0	261	1680260377130039187	CMakeFiles/Algorithms_Project_1.dir/Graph.cpp.o	c56fd3ed1a03904b
+1	287	1680260377156265893	CMakeFiles/Algorithms_Project_1.dir/GeneralMethods.cpp.o	9ada88b6b88a1e98
+0	292	1680260377161738481	CMakeFiles/Algorithms_Project_1.dir/main.cpp.o	730624edd5cb2fca
+292	325	1680260377196082279	Algorithms_Project_1	f6c832d1522a24c3
+1	203	1680260440195884602	CMakeFiles/Algorithms_Project_1.dir/GeneralMethods.cpp.o	9ada88b6b88a1e98
+1	208	1680260440201971015	CMakeFiles/Algorithms_Project_1.dir/main.cpp.o	730624edd5cb2fca
+208	236	1680260440230409397	Algorithms_Project_1	f6c832d1522a24c3
+2	204	1680260645453919428	CMakeFiles/Algorithms_Project_1.dir/GeneralMethods.cpp.o	9ada88b6b88a1e98
+204	231	1680260645483236689	Algorithms_Project_1	f6c832d1522a24c3
+2	193	1680261073085939498	CMakeFiles/Algorithms_Project_1.dir/main.cpp.o	730624edd5cb2fca
+193	216	1680261073110445757	Algorithms_Project_1	f6c832d1522a24c3
+1	185	1680261412246900380	CMakeFiles/Algorithms_Project_1.dir/Graph.cpp.o	c56fd3ed1a03904b
+1	215	1680261412277232580	CMakeFiles/Algorithms_Project_1.dir/GeneralMethods.cpp.o	9ada88b6b88a1e98
+1	220	1680261412283041947	CMakeFiles/Algorithms_Project_1.dir/main.cpp.o	730624edd5cb2fca
+221	249	1680261412312957109	Algorithms_Project_1	f6c832d1522a24c3
+1	198	1680261437634215854	CMakeFiles/Algorithms_Project_1.dir/main.cpp.o	730624edd5cb2fca
+198	221	1680261437658906665	Algorithms_Project_1	f6c832d1522a24c3
