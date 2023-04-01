@@ -68,13 +68,18 @@ bool Graph::addEdge(int from, int to)
 		return false;
 	}
 
-	adjArray[from - 1].push_back(to);
+    Trio fromStruct = Trio{from, false};
+    Trio toStruct = Trio{to, false};
+    fromStruct.mutualPointer = &toStruct;
+    toStruct.mutualPointer = &fromStruct;
+
+	adjArray[from - 1].push_back(fromStruct);
 	outDegrees[from - 1]++;
 	inDegrees[to - 1]++;
 	
 	if (!directed)
 	{
-		adjArray[to - 1].push_back(from);
+		adjArray[to - 1].push_back(toStruct);
 		outDegrees[to - 1]++;
 		inDegrees[from - 1]++;
 	}
@@ -84,10 +89,10 @@ bool Graph::addEdge(int from, int to)
 
 bool Graph::hasEdge(int from, int to)
 {
-	list<int> adjList = adjArray[from - 1];
+	list<Trio> adjList = adjArray[from - 1];
 	for (auto neighbor : adjList)
 	{
-		if (neighbor == to)
+		if (neighbor.vertex == to)
 			return true;
 	}
 
@@ -104,13 +109,13 @@ bool Graph::isConnected()
 	return true;
 }
 
-const list<int>& Graph::findEulerCircuit()
+list<int>& Graph::findEulerCircuit()
 {
 	list<int> EulerCircuit;
 	return EulerCircuit;
 }
 
-const list<int>& Graph::findCircuit()
+list<int>& Graph::findCircuit()
 {
 	list<int> circuit;
 	return circuit;

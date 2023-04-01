@@ -6,8 +6,7 @@ using std::cout;
 using std::cin;
 using std::endl;
 
-void isGraphDirected(Graph&) noexcept(false);
-void getGraphInfo(Graph&, int&, int&) noexcept(false);
+Graph& getGraphInfo() noexcept(false);
 
 class generalException: public std::exception
 {

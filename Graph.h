@@ -4,13 +4,21 @@
 
 using std::vector;
 using std::list;
+
+struct Trio
+{
+    int vertex;
+    bool visited;
+    Trio* mutualPointer = nullptr;
+};
+
 class Graph
 {
 	//Attributes
 	int n;
 	int m;
-	vector<list<int>> adjArray;
-	vector<list<int>::iterator> pos;
+	vector<list<Trio>> adjArray;
+	vector<list<Trio>::iterator> pos;
 	vector<int> inDegrees;
 	vector<int> outDegrees;
 	bool directed;
@@ -32,6 +40,6 @@ public:
 	bool hasEdge(int from, int to);
 	bool isEulerian();
 	bool isConnected();
-	const list<int>& findEulerCircuit();
-	const list<int>& findCircuit();
+	list<int>& findEulerCircuit();
+	list<int>& findCircuit();
 };

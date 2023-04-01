@@ -2,12 +2,24 @@
 
 int main()
 {
-    int numOfVertices, numOfEdges;
-    Graph mainGraph;
     try
     {
-        isGraphDirected(mainGraph);
-        getGraphInfo(mainGraph, numOfVertices, numOfEdges);
+        Graph mainGraph = getGraphInfo();
+        //check if graph is connected
+            //DFS
+            //Optional: check if sufficient condition is met
+        //check if graph is eulerian
+            //check if necessary condition is met
+                //if it does, run the algorithm for finding an eulerian circle, using findCircuit
+                //if it is, print euler circle
+            //else, there is no circuit
+
+        //needed methods:
+        // 1. checkIfConnected (IGNORE FOR NOW)
+            // DFS, visit, Transpose
+        // 2. checkIfEulerian
+            // checkCondition, findEulerCircuit, findCircuit
+
     }
     catch (generalException& error)
     {
@@ -17,9 +29,6 @@ int main()
     {
         cout << generalException().what() << endl;
     }
-    //check if graph is connected
-    //check if graph is eulerian
-        //if it is, print euler circle
 
     return 1;
 }
