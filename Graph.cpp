@@ -147,19 +147,18 @@ list<int>& Graph::findEulerCircuit()
 {
 	list<int> EulerCircuit;
 
-    //EulerCircuit = findCircuit(*this, 1);
+//    EulerCircuit = findCircuit(*this, 1);
 
     auto outputIterator = EulerCircuit.begin();
-    auto adjIterator = adjArray[*outputIterator].begin();
 
-    for (int vertex : EulerCircuit)
+    while (outputIterator != EulerCircuit.end())
     {
-
-    }
-
-    while (this->pos.at(*outputIterator) != adjArray.at((*outputIterator)).end())
-    {
-
+        if (this->pos.at(*outputIterator-1) != adjArray.at(*outputIterator-1).end())
+        {
+//            list<int> innerList = findCircuit(*this, vertex);
+//            for (vertex : innerList)
+//                EulerCircuit.insert(outputIterator, vertex);
+        }
     }
 
 	return EulerCircuit;
