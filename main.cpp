@@ -5,7 +5,15 @@ int main()
     try
     {
         Graph mainGraph = getGraphInfo();
-        //check if graph is connected
+        if (bool checkConditions = mainGraph.Graph::isEulerian())
+        {
+            list<int> eulerCircuit = mainGraph.findEulerCircuit();
+        }
+
+        else
+            cout << "The graph is not aulerian";
+
+        //check if graph is connected (IGNORE FOR NOW)
             //DFS
             //Optional: check if sufficient condition is met
         //check if graph is eulerian

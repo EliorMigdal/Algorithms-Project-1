@@ -7,8 +7,8 @@ using std::list;
 
 struct Trio
 {
-    int vertex;
-    bool visited;
+    int vertex = 0;
+    bool visited = false;
     Trio* mutualPointer = nullptr;
 };
 

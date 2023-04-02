@@ -6,7 +6,7 @@ using std::cout;
 using std::cin;
 using std::endl;
 
-Graph& getGraphInfo() noexcept(false);
+Graph getGraphInfo() noexcept(false);
 
 class generalException: public std::exception
 {
