@@ -28,11 +28,12 @@ Graph getGraphInfo() noexcept(false)
         cin >> source;
         cin >> destination;
 
-        if (source < 0 || destination < 0 || source > numOfVertices || destination > numOfVertices)
+        if (source <= 0 || destination <= 0 || source > numOfVertices || destination > numOfVertices
+                       || outputGraph.hasEdge(source, destination))
             throw invalidInputException();
 
         outputGraph.Graph::addEdge(source, destination);
     }
-
+    outputGraph.initPos();
     return outputGraph;
 }

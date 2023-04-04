@@ -2,19 +2,6 @@
 
 /*--------------------Constructor--------------------*/
 
-Graph::Graph(char directed)
-{
-	n = 0;
-	m = 0;
-	if (directed == 'y')
-	{
-		this->directed = true;
-	}
-	else
-	{
-		this->directed = false;
-	}
-}
 
 /*----------------------Getters----------------------*/
 
@@ -28,26 +15,20 @@ int Graph::getNumOfEdges() const
 	return m;
 }
 
-list<Trio>::iterator Graph::getVertexPos(const int v)
+list<Trio>::iterator Graph::getVertexPos(const int v) const
 {
-	return pos.at(v);
+	return pos.at(v - 1);
 }
 
 /*----------------------Setters----------------------*/
 
-bool Graph::setNumOfVertices(int _n)
+void Graph::setNumOfVertices(int _n)
 {
-	if (_n < 0)
-	{
-		return false;
-	}
-
 	adjArray.resize(_n);
 	inDegrees.resize(_n, 0);
 	outDegrees.resize(_n, 0);
 	pos.resize(_n);
 	this->n = _n;
-	return true;
 }
 
 void Graph::setGraphDirection(char isDirected)
@@ -61,89 +42,64 @@ void Graph::setGraphDirection(char isDirected)
 
 /*----------------------Methods----------------------*/
 
-bool Graph::addEdge(int from, int to)
+void Graph::addEdge(const int from, const int to)
 {
-	if (from < 1 || from > n)
-	{
-		return false;
-	}
-
-	if (to < 1 || to > n)
-	{
-		return false;
-	}
-
-	if (hasEdge(from, to))
-	{
-		return false;
-	}
-
     Trio fromStruct = {from, false};
     Trio toStruct = {to, false};
     
-
 	adjArray[from - 1].push_back(toStruct);
 	outDegrees[from - 1]++;
 	inDegrees[to - 1]++;
 	
-	if (adjArray[from - 1].size() == 1)
-	{
-		pos.at(from - 1) = adjArray.at(from-1).begin();
-	}
 	if (!directed)
 	{
 		adjArray[to - 1].push_back(fromStruct);
 		outDegrees[to - 1]++;
 		inDegrees[from - 1]++;
-		if (adjArray[to - 1].size() == 1)
-		{
-			pos[to - 1] = adjArray[to - 1].begin();
-		}
 		adjArray[from - 1].back().mutualPointer = &adjArray[to - 1].back();
 		adjArray[to - 1].back().mutualPointer = &adjArray[from - 1].back();
 	}
 	m++;
-	return true;
 }
 
-bool Graph::hasEdge(int from, int to)
+bool Graph::hasEdge(const int from, const int to)
 {
-	list<Trio> adjList = adjArray[from - 1];
-	for (auto neighbor : adjList)
+	for (auto neighbor : adjArray[from - 1])
 	{
 		if (neighbor.vertex == to)
 			return true;
 	}
-
 	return false;
 }
 
 bool Graph::isEulerian()
 {
     bool isEulerian = true;
+	if (!isConnected())
+		isEulerian = false;
 
-    if (directed)
+    else if (directed)
     {
+
         auto inIterator = inDegrees.begin();
         auto outIterator = outDegrees.begin();
 
         while (inIterator != inDegrees.end() && outIterator != outDegrees.end() && isEulerian)
         {
-            if (*inIterator != *outIterator)
+            if (*inIterator != *outIterator || *inIterator == 0 || *outIterator == 0)
                 isEulerian = false;
 
             inIterator++;
             outIterator++;
         }
     }
-
     else
     {
         auto degIterator = inDegrees.begin();
 
         while (degIterator != inDegrees.end() && isEulerian)
         {
-            if (*degIterator % 2 != 0)
+            if (*degIterator % 2 != 0 || *degIterator == 0)
                 isEulerian = false;
 
             degIterator++;
@@ -153,7 +109,7 @@ bool Graph::isEulerian()
     return isEulerian;
 }
 
-bool Graph::isConnected()
+bool isConnected()
 {
 	return true;
 }
@@ -161,6 +117,7 @@ bool Graph::isConnected()
 list<int> Graph::findEulerCircuit()
 {
 	list<int> EulerCircuit;
+	list<int> innerCircuit;
 
     EulerCircuit = findCircuit(1);
 
@@ -168,11 +125,14 @@ list<int> Graph::findEulerCircuit()
 
     while (outputIterator != EulerCircuit.end())
     {
-        if (this->pos.at(*outputIterator-1) != adjArray.at(*outputIterator-1).end())
+        if (isVertexHasUnusedEdges(*outputIterator))
         {
-            list<int> innerList = findCircuit(*outputIterator);
-            EulerCircuit.insert(outputIterator, innerList.begin(), innerList.end());
+			innerCircuit = findCircuit(*outputIterator);
+			auto temp = outputIterator;
+            EulerCircuit.insert(++outputIterator, ++innerCircuit.begin(), innerCircuit.end());
+			outputIterator = temp;
         }
+
 		outputIterator++;
     }
 
@@ -183,34 +143,49 @@ list<int> Graph::findCircuit(const int start)
 {
 	int v = start;
 	list<int> circuit;
-	circuit.push_back(start - 1);
+	circuit.push_back(start);
+	int temp;
 
-	while(isVertexHasUnusedEdges(v - 1))
+	while(isVertexHasUnusedEdges(v))
 	{
-		auto neighbor = getVertexPos(v - 1);
-		markEdge(v - 1, *neighbor);
-		circuit.push_back(neighbor->vertex);
-		v = neighbor->vertex;
+		while (pos.at(v - 1) != adjArray.at(v - 1).end() && pos.at(v - 1)->visited == true)
+		{
+			pos.at(v - 1)++;
+		}
+
+		if (pos.at(v - 1) != adjArray.at(v - 1).end())
+		{
+			markEdge(v);
+			circuit.push_back(pos.at(v - 1)->vertex);
+			temp = v;
+			v = pos.at(v - 1)->vertex;
+			pos.at(temp - 1)++;
+		}
 	}
 
 	return circuit;
 }
 
-bool Graph::isVertexHasUnusedEdges(const int v)
+bool Graph::isVertexHasUnusedEdges(const int v) const
 {
-	return pos[v] != adjArray[v].end();
+	return pos[v - 1] != adjArray[v - 1].end();
 }
 
-void Graph::markEdge(const int v, Trio& neighbor)
+void Graph::markEdge(const int v)
 {
-	neighbor.visited = true;
+	pos.at(v - 1)->visited = true;
 	if (!directed)
 	{
-		neighbor.mutualPointer->visited = true;
+		pos.at(v - 1)->mutualPointer->visited = true;
 	}
-	while (pos.at(v) != adjArray.at(v).end() && pos.at(v)->visited == true)
+
+}
+
+void Graph::initPos()
+{
+	for (int i = 0;  i< n; i++)
 	{
-		pos.at(v)++;
+		pos.at(i) = adjArray.at(i).begin();
 	}
 }
 
