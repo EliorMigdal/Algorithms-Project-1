@@ -30,16 +30,21 @@ public:
 	//Getters
 	int getNumOfVertices() const;
 	int getNumOfEdges() const;
+	list<Trio>::iterator getVertexPos(const int v);
+	
 
 	//Setters
 	bool setNumOfVertices(int n);
     void setGraphDirection(char);
 
+
 	//Methods
-	bool addEdge(int from, int to);
-	bool hasEdge(int from, int to);
+	bool addEdge(const int from, const int to);
+	bool hasEdge(const int from, const int to);
 	bool isEulerian();
 	bool isConnected();
-	list<int>& findEulerCircuit();
-	list<int>& findCircuit();
+	list<int> findEulerCircuit();
+	list<int> findCircuit(const int start);
+	bool isVertexHasUnusedEdges(const int v);
+	void markEdge(const int v, Trio& neighbor);
 };

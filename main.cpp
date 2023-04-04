@@ -5,13 +5,23 @@ int main()
     try
     {
         Graph mainGraph = getGraphInfo();
+        list<int> eulerCircuit;
         if (bool checkConditions = mainGraph.Graph::isEulerian())
         {
-            list<int> eulerCircuit = mainGraph.findEulerCircuit();
-        }
+            eulerCircuit = mainGraph.findEulerCircuit();
 
+        }
+        
         else
             cout << "The graph is not aulerian";
+
+        if (!eulerCircuit.empty())
+        {
+            for (auto elem : eulerCircuit)
+            {
+                cout << elem << " - ";
+            }
+        }
 
         //check if graph is connected (IGNORE FOR NOW)
             //DFS
