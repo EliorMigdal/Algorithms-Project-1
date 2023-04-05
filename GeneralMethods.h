@@ -17,7 +17,7 @@ public:
 class invalidInputException: public generalException
 {
 public:
-    const char* what() const noexcept override { return "Invalid input."; }
+    const char* what() const noexcept override { return "Invalid input"; }
 };
 
 #endif //ALGORITHMS_PROJECT_1_GENERALMETHODS_H

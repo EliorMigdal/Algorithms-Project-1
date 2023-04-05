@@ -1,3 +1,4 @@
+//Algorithms Assignment#1, by Ofek Shcherb and Elior Migdal.
 #include "GeneralMethods.h"
 
 int main()
@@ -6,10 +7,9 @@ int main()
     {
         Graph mainGraph = getGraphInfo();
         list<int> eulerCircuit;
-        if (bool checkConditions = mainGraph.Graph::isEulerian())
+        if (mainGraph.Graph::isConnected() && mainGraph.Graph::isEulerian())
         {
             eulerCircuit = mainGraph.findEulerCircuit();
-
         }
         
         else
@@ -17,27 +17,16 @@ int main()
 
         if (!eulerCircuit.empty())
         {
-            for (auto elem : eulerCircuit)
+            cout << "The graph is aulerian\n(";
+            auto eulerIterator = eulerCircuit.begin();
+            while (eulerIterator != eulerCircuit.end())
             {
-                cout << elem << " - ";
+                cout << *eulerIterator++;
+                if (eulerIterator != eulerCircuit.end())
+                    cout << ",";
             }
+            cout << ")";
         }
-
-        //check if graph is connected (IGNORE FOR NOW)
-            //DFS
-            //Optional: check if sufficient condition is met
-        //check if graph is eulerian
-            //check if necessary condition is met
-                //if it does, run the algorithm for finding an eulerian circle, using findCircuit
-                //if it is, print euler circle
-            //else, there is no circuit
-
-        //needed methods:
-        // 1. checkIfConnected (IGNORE FOR NOW)
-            // DFS, visit, Transpose
-        // 2. checkIfEulerian
-            // checkCondition, findEulerCircuit, findCircuit
-
     }
     catch (generalException& error)
     {

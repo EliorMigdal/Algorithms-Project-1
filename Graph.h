@@ -5,6 +5,10 @@
 using std::vector;
 using std::list;
 
+constexpr short int WHITE = 0;
+constexpr short int GRAY = 1;
+constexpr short int BLACK = 2;
+
 struct Trio
 {
     int vertex = 0;
@@ -24,27 +28,29 @@ class Graph
 	bool directed = false;
 
 public:
-	//Empty constructor
-
 	//Getters
 	int getNumOfVertices() const;
 	int getNumOfEdges() const;
-	list<Trio>::iterator getVertexPos(const int v) const;
-	
+	list<Trio>::iterator getVertexPos(int v) const;
 
 	//Setters
 	void setNumOfVertices(int n);
     void setGraphDirection(char);
 
-
-	//Methods
+    //Methods
 	void initPos();
-	void addEdge(const int from, const int to);
-	bool hasEdge(const int from, const int to);
-	bool isEulerian();
-	bool isConnected();
-	list<int> findEulerCircuit();
-	list<int> findCircuit(const int start);
-	bool isVertexHasUnusedEdges(const int v) const;
-	void markEdge(const int v);
+    void initializeEdges();
+    void addEdge(int from, int to);
+    bool hasEdge(int from, int to) const;
+    void markEdge(int v);
+    bool isVertexHasUnusedEdges(int v) const;
+    bool isConnected();
+    bool isEulerian();
+    Graph DFS();
+    void visit(Graph&, int, vector<int>&);
+    Graph transposeGraph();
+    vector<int> initializeColorsVector() const;
+    bool visitedEntireDFSTree(vector<int>&);
+    list<int> findEulerCircuit();
+    list<int> findCircuit(int start);
 };

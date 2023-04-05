@@ -18,7 +18,7 @@ Graph getGraphInfo() noexcept(false)
     cin >> numOfVertices;
     cin >> numOfEdges;
 
-    if (numOfVertices < 0 || numOfEdges < 0)
+    if (numOfVertices <= 0 || numOfEdges <= 0)
         throw invalidInputException();
 
     outputGraph.Graph::setNumOfVertices(numOfVertices);
