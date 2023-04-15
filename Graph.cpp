@@ -64,7 +64,7 @@ void Graph::addEdge(int from, int to) //Inserts the (from, to) edge to the graph
     outDegrees[from - 1]++;
     inDegrees[to - 1]++;
 
-    if (!directed)
+    if (!this->directed)
     {
         adjArray[to - 1].push_back(fromStruct);
         outDegrees[to - 1]++;
@@ -77,18 +77,19 @@ void Graph::addEdge(int from, int to) //Inserts the (from, to) edge to the graph
 
 bool Graph::hasEdge(int from, int to) const //Checks whether the edge (from, to) already exists in the graph.
 {
+    bool hasEdge = false;
 	for (auto neighbor : adjArray[from - 1])
 	{
 		if (neighbor.vertex == to)
-			return true;
+			hasEdge = true;
 	}
-	return false;
+	return hasEdge;
 }
 
 void Graph::markEdge(const int v) //Sets an edge as visited.
 {
     pos.at(v - 1)->visited = true;
-    if (!directed)
+    if (!this->directed)
     {
         pos.at(v - 1)->mutualPointer->visited = true;
     }
@@ -101,36 +102,31 @@ bool Graph::isVertexHasUnusedEdges(int v) const //Returns whether we visited all
 
 bool Graph::isConnected() //Checks whether graph is connected.
 {
-    bool output;
-    Graph DFSTree = this->Graph::DFS();
+    bool isConnected;
+
+    vector<int> colors = this->Graph::initializeColorsVector();
+    this->Graph::visit(this->n, colors);
     this->Graph::initPos();
     this->Graph::initializeEdges();
 
-    Graph tripOnDFSTree;
-    tripOnDFSTree.setNumOfVertices(n);
-    tripOnDFSTree.setGraphDirection('y');
+    Graph::visitedEntireGraph(colors) ? isConnected = true : isConnected = false;
 
-    vector<int> colors = this->Graph::initializeColorsVector();
-    DFSTree.Graph::visit(tripOnDFSTree, 0, colors);
-
-    Graph::visitedEntireDFSTree(colors) ? output = true : output = false;
-
-    if (output && this->directed)
+    if (isConnected && this->directed)
     {
         Graph GTranspose = this->Graph::transposeGraph();
         vector<int> tColors = this->Graph::initializeColorsVector();
-        GTranspose.Graph::visit(tripOnDFSTree, 0, tColors);
-        Graph::visitedEntireDFSTree(tColors) ? output = true : output = false;
+        GTranspose.Graph::visit(this->n, tColors);
+        Graph::visitedEntireGraph(tColors) ? isConnected = true : isConnected = false;
     }
 
-    return output;
+    return isConnected;
 }
 
 bool Graph::isEulerian() //Checks whether graph in Eulerian.
 {
     bool isEulerian = true;
 
-    if (directed)
+    if (this->directed)
     {
         auto inIterator = inDegrees.begin();
         auto outIterator = outDegrees.begin();
@@ -159,44 +155,21 @@ bool Graph::isEulerian() //Checks whether graph in Eulerian.
     return isEulerian;
 }
 
-Graph Graph::DFS() //DFS algorithm.
+void Graph::visit(const int vertex, vector<int> & colors) //The 'visit' part of DFS algorithm.
 {
-    Graph output;
-    vector<int> colors = initializeColorsVector();
-    output.setNumOfVertices(n);
-    output.setGraphDirection('y');
-    int index = 0;
+    colors.at(vertex - 1) = (int)COLORS::GRAY;
 
-    for (int& vertex : colors)
+    while (this->Graph::isVertexHasUnusedEdges(vertex))
     {
-        if (vertex == WHITE)
+        if (colors.at(pos.at(vertex - 1)->vertex - 1) == (int)COLORS::WHITE)
         {
-            this->Graph::visit(output, index, colors);
+            this->Graph::markEdge(vertex);
+            this->Graph::visit(pos.at(vertex - 1)->vertex, colors);
         }
-        index++;
+        pos.at(vertex - 1)++;
     }
 
-    output.Graph::initPos();
-
-    return output;
-}
-
-void Graph::visit(Graph & graph, const int vertex, vector<int> & colors) //The 'visit' part of DFS algorithm.
-{
-    colors.at(vertex) = GRAY;
-
-    while (pos.at(vertex) != adjArray.at(vertex).end())
-    {
-        if (colors.at(pos.at(vertex)->vertex - 1) == WHITE)
-        {
-            graph.Graph::addEdge(vertex + 1, pos.at(vertex)->vertex);
-            this->Graph::markEdge(vertex + 1);
-            this->Graph::visit(graph, pos.at(vertex)->vertex - 1, colors);
-        }
-        pos.at(vertex)++;
-    }
-
-    colors.at(vertex) = BLACK;
+    colors.at(vertex - 1) = (int)COLORS::BLACK;
 }
 
 Graph Graph::transposeGraph() //Transforms graph to G-transpose.
@@ -207,8 +180,8 @@ Graph Graph::transposeGraph() //Transforms graph to G-transpose.
 
     else
     {
-        output.setNumOfVertices(n);
-        output.setGraphDirection('y');
+        output.Graph::setNumOfVertices(n);
+        output.Graph::setGraphDirection('y');
         for (int i = 0; i < this->n; i++)
         {
             for (auto &neighbor: adjArray.at(i))
@@ -226,20 +199,17 @@ Graph Graph::transposeGraph() //Transforms graph to G-transpose.
 vector<int> Graph::initializeColorsVector() const //Sets all vertices as whites.
 {
     vector<int> output;
-    output.resize(n);
-
-    for (int& vertex : output)
-        vertex = WHITE;
+    output.resize(n, (int)COLORS::WHITE);
 
     return output;
 }
 
-bool Graph::visitedEntireDFSTree(vector<int> & colors) //Checks whether DFS tree is connected.
+bool Graph::visitedEntireGraph(vector<int> & colors) //Checks whether DFS tree is connected.
 {
     bool output = true;
 
     for (int vertex : colors)
-        if (vertex != BLACK)
+        if (vertex != (int)COLORS::BLACK)
             output = false;
 
     return output;
@@ -277,16 +247,17 @@ list<int> Graph::findCircuit(const int start) //Finds a circuit in the graph.
     circuit.push_back(start);
     int temp;
 
-    while(isVertexHasUnusedEdges(v))
+    while(this->Graph::isVertexHasUnusedEdges(v))
     {
         while (pos.at(v - 1) != adjArray.at(v - 1).end() && pos.at(v - 1)->visited)
+            //For cases that v's iterator is pointing at a visited edge.
         {
             pos.at(v - 1)++;
         }
 
         if (pos.at(v - 1) != adjArray.at(v - 1).end())
         {
-            markEdge(v);
+            this->Graph::markEdge(v);
             circuit.push_back(pos.at(v - 1)->vertex);
             temp = v;
             v = pos.at(v - 1)->vertex;

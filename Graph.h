@@ -5,16 +5,14 @@
 using std::vector;
 using std::list;
 
-constexpr short int WHITE = 0;
-constexpr short int GRAY = 1;
-constexpr short int BLACK = 2;
-
 struct Trio
 {
     int vertex = 0;
     bool visited = false;
     Trio* mutualPointer = nullptr;
 };
+
+enum class COLORS {WHITE, GRAY, BLACK};
 
 class Graph
 {
@@ -46,11 +44,10 @@ public:
     bool isVertexHasUnusedEdges(int v) const;
     bool isConnected();
     bool isEulerian();
-    Graph DFS();
-    void visit(Graph&, int, vector<int>&);
+    void visit(int, vector<int>&);
     Graph transposeGraph();
     vector<int> initializeColorsVector() const;
-    bool visitedEntireDFSTree(vector<int>&);
+    static bool visitedEntireGraph(vector<int>&);
     list<int> findEulerCircuit();
     list<int> findCircuit(int start);
 };
